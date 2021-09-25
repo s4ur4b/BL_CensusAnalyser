@@ -17,17 +17,17 @@ public class StateCensusTest {
         Assert.assertEquals(6,read.readDataCount(filePath,fileName));
     }
 
-//    @Test
-//    public void givenStateCensusCSVFile_ifIncorrect_returnsCustomException() {
-//        // Provided an incorrect file path( here the file xyz.csv doesn't exists)
-//        String filePath ="src/main/java/com/bl/censusAnalyser/xyz.csv";
-//        String fileName = "xyz";
-//        try {
-//            Assert.assertEquals(6,read.readDataCount(filePath,fileName));
-//        } catch (StateCensusAnalyserException e) {
-//            System.out.println(e.getMessage());
-//        }
-//    }
+    @Test
+    public void givenStateCensusCSVFile_ifIncorrect_returnsCustomException() {
+        // Provided an incorrect file path( here the file xyz.csv doesn't exists)
+        String filePath ="src/main/java/com/bl/censusAnalyser/xyz.csv";
+        String fileName = "xyz";
+        try {
+            Assert.assertEquals(6,read.readDataCount(filePath,fileName));
+        } catch (StateCensusAnalyserException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 //
 //    @Test
 //    public void givenStateCensusCSVFile_ifFileTypeIncorrect_returnsCustomException(){
