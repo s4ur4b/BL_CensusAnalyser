@@ -13,30 +13,50 @@ public class StateCensusTest {
     @Test
     public void givenStateCensusCSVFile_ensureNumberOfRecordsMatch() throws StateCensusAnalyserException {
         String filePath = "src/main/java/com/bl/censusAnalyser/StateCensusData.csv";
-        String fileName = "StateCensusData";
-        Assert.assertEquals(6,read.readDataCount(filePath,fileName));
+        Assert.assertEquals(6,read.readDataCount(filePath));
     }
 
+    //Test Case 2 : Given the State Census CSV File if incorrect Returns a custom Exception
+    //              This is a Sad Test Case to verify if the exception is raised.
     @Test
     public void givenStateCensusCSVFile_ifIncorrect_returnsCustomException() {
         // Provided an incorrect file path( here the file xyz.csv doesn't exists)
         String filePath ="src/main/java/com/bl/censusAnalyser/xyz.csv";
-        String fileName = "xyz";
         try {
-            Assert.assertEquals(6,read.readDataCount(filePath,fileName));
+            Assert.assertEquals(6,read.readDataCount(filePath));
         } catch (StateCensusAnalyserException e) {
             System.out.println(e.getMessage());
         }
     }
 
+//    Test Case 3 : Given the State Census CSV File when correct but type incorrect Returns a custom Exception
+//                 This is a Sad Test Case to verify if the type is incorrect then exception is raised.
     @Test
     public void givenStateCensusCSVFile_ifFileTypeIncorrect_returnsCustomException(){
         String filePath = "src/main/java/com/bl/censusAnalyser/StateCensusData";
-        String fileName = "StateCensusData";
         try {
-            Assert.assertEquals(6,read.readDataCount(filePath,fileName));
+            Assert.assertEquals(6,read.readDataCount(filePath));
         } catch (StateCensusAnalyserException e) {
             System.out.println(e.getMessage());
+        }
+    }
+
+
+    /**
+     * Test Case 4 : Given the State Census CSV File when correct but delimiter incorrect
+     *               Returns a custom Exception
+     *              This is a Sad Test Case to verify if the file
+     *              delimiter is incorrect then exception is raised.
+     */
+    @Test
+    public void givenStateCensusCSVFile_ifDelimeterIncorrect_returnsCustomException(){
+        String filePath = "src/main/java/com/bl/censusAnalyser/StateCensusData.csv";
+        String delimeter ="";
+        try {
+          boolean result =   read.readDelimeter(filePath,delimeter);
+          Assert.assertEquals(true,result);
+        } catch (StateCensusAnalyserException e) {
+            System.out.println(e.getMessage());;
         }
     }
 }

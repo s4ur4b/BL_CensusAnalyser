@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Pattern;
 
 public class ReadOperations {
 
@@ -28,38 +29,51 @@ public class ReadOperations {
         }
     }
 
-    public int readDataCount(final String filePath, String fileNameInput) throws StateCensusAnalyserException {
-        final AtomicInteger count = new AtomicInteger();
-        final AtomicBoolean firstLine = new AtomicBoolean(true);
-
+    public int readDataCount(final String filePath) throws StateCensusAnalyserException {
+        AtomicBoolean firstLine = new AtomicBoolean(true);
+        AtomicInteger count = new AtomicInteger();
         try {
-            File file = new File(filePath);
-            String fileName = file.getName();
-            String fileNameWithoutExtension = " ";
-            int pos = fileName.lastIndexOf(".");
-            if (pos > 0 && pos < (fileName.length() - 1)) {
-                fileNameWithoutExtension = fileName.substring(0, pos);
-            }
+            Files.lines(Paths.get(filePath))
+                    .forEach(lines -> {
+                        if (lines.startsWith("State")) {
+                            firstLine.set(false);
+                        } else {
+                            lines.split("\n");
+                            count.getAndIncrement();
+                            System.out.println(lines);
+                        }
 
-            if (!fileNameWithoutExtension.equals(fileNameInput)) {
-                throw new StateCensusAnalyserException("Please enter a proper file name!");
-            }
-
-            if (!fileName.contains(".csv"))
-                throw new StateCensusAnalyserException("Please enter a proper file type!");
-
-            Files.lines(Paths.get(filePath)).forEach(lines -> {
-                if (lines.startsWith("State"))
-                    firstLine.set(false);
-                else {
-                    lines.split("\n");
-                    count.getAndIncrement();
-                }
-            });
+                    });
+            System.out.println("\nCount : " + count);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new StateCensusAnalyserException("Enter Correct File Name");
         }
-        return Integer.parseInt(String.valueOf(count));
+        int countOfRecords = count.intValue();
+        return countOfRecords;
+    }
+
+    public boolean readDelimeter(String filePath, String delimeterInput) throws StateCensusAnalyserException {
+        boolean flag = true;
+
+        File file = new File(filePath);
+        Scanner scanner = null;
+        try {
+            scanner = new Scanner(file);
+            scanner.useDelimiter(delimeterInput);
+
+            Pattern result = scanner.delimiter();
+        if (result.pattern().equals(",")){
+            flag = true;
+        }
+        else {
+            flag = false;
+            throw new StateCensusAnalyserException("Enter Correct Delimeter in CSV File");
+        }
+        } catch ( Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return flag;
     }
 }
