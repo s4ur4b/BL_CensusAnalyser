@@ -28,15 +28,15 @@ public class StateCensusTest {
             System.out.println(e.getMessage());
         }
     }
-//
-//    @Test
-//    public void givenStateCensusCSVFile_ifFileTypeIncorrect_returnsCustomException(){
-//        String filePath = "src/main/java/com/bl/censusAnalyser/StateCensusData";
-//        String fileName = "StateCensusData";
-//        try {
-//            Assert.assertEquals(6,read.readDataCount(filePath,fileName));
-//        } catch (StateCensusAnalyserException e) {
-//            System.out.println(e.getMessage());
-//        }
-//    }
+
+    @Test
+    public void givenStateCensusCSVFile_ifFileTypeIncorrect_returnsCustomException(){
+        String filePath = "src/main/java/com/bl/censusAnalyser/StateCensusData";
+        String fileName = "StateCensusData";
+        try {
+            Assert.assertEquals(6,read.readDataCount(filePath,fileName));
+        } catch (StateCensusAnalyserException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }
