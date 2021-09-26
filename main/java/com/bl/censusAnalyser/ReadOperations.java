@@ -1,10 +1,10 @@
 package com.bl.censusAnalyser;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import javax.swing.*;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -74,6 +74,24 @@ public class ReadOperations {
             System.out.println(e.getMessage());
         }
 
+        return flag;
+    }
+
+    public boolean checkHeader(String filePath, List<String> stringName) throws StateCensusAnalyserException, IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(filePath));
+
+        //Reading header
+        String line = reader.readLine();
+        String[] header = line.split(",");
+        boolean flag = true;
+        for (int i = 0; i < header.length && i < stringName.size(); i++) {
+            if(stringName.get(i).equals(header[i]))
+                flag = true;
+            else {
+                flag = false;
+                throw new StateCensusAnalyserException("Please enter the correct header!");
+            }
+        }
         return flag;
     }
 }

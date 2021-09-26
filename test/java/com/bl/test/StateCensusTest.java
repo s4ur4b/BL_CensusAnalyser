@@ -6,6 +6,10 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 public class StateCensusTest {
     ReadOperations read = new ReadOperations();
 
@@ -57,6 +61,34 @@ public class StateCensusTest {
           Assert.assertEquals(true,result);
         } catch (StateCensusAnalyserException e) {
             System.out.println(e.getMessage());;
+        }
+    }
+
+    /**
+     * Test Case 5 : Given the State Census CSV File when correct but csv header incorrect
+     *              Returns a custom Exception
+     *              This is a Sad Test Case to verify if the header is
+     *              incorrect then exception is raised.
+     *
+     */
+
+    @Test
+    public void givenStateCensusCSVFileCorrect_ButHeaderIncorrectShouldThowException() {
+        List<String> stringName = new ArrayList<>();
+        String filePathRead = "src/main/java/com/bl/censusAnalyser/StateCensusData.csv";
+        stringName.add("City");
+        stringName.add("Population");
+        stringName.add("AreaInSqKm");
+        stringName.add("DensityPerSqKm");
+
+        try {
+            boolean flag = read.checkHeader(filePathRead, stringName);
+            if(flag == true)
+                Assert.assertTrue(flag);
+            else
+                Assert.assertFalse(flag);
+        } catch ( StateCensusAnalyserException | IOException e) {
+            System.out.println(e.getMessage());
         }
     }
 }
